@@ -5,6 +5,7 @@ const {getStreams} = require('./streamsGQL');
 
 const router = express.Router();
 
+// All Streams
 router.get('/',  (req, res) => {
     fetch(config.strapi.baseUrl, {
         headers: config.strapi.headers,
