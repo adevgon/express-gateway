@@ -1,0 +1,91 @@
+
+
+This is the api gateway for the strapi backend.
+
+We have two Projects at hand
+
+1. Admin App
+2. Client App
+
+Client App
+    - Sign up and Register
+    - Setup
+    - Serve
+    - Settings and preferences
+
+- Setup
+    We need to setup a user before we can start serving them
+    To Do so we have to go through a series of steps that will
+    help us capture user details and help setup user profile.
+
+    In order to do so the user will go through a series of screens
+    and choose certain options that the app presents.
+    The applications takes these options and creates a user object
+    that is then persisted.
+
+    Setup Flow
+      - What kind of user you are ?
+            Student || Professional || Hobbyist || Team Lead* || Adhoc Event (getUserType)
+
+        If Student
+         - Chose your standard (var selectedStandard = List getSupportedStanards / all)(single selection allowed)
+         - Chose the subjects you want to focus (List getK12Subjects / ? standard= selectedStandard ) (multi selection allowed)
+
+        If Professional || Hobbyist
+         - Choose Stream (var selectedStream = List getStreams / all)(single selection allowed)
+         - Choose Major  (var selectedMajor = List getMajors / ? streams = selectedStreams) (single selection allowed)
+         - Choose Subjects (List getSubjects / ? major = selectedMajor ) (multi selection allowed)
+
+        If Team Lead * (Future feature)
+         - Options Similar to Professional
+         - Add Team Members
+
+      - Build a User Object and call user service to setup the user.
+        - Save/Post user Object -> Navigate to Home Page
+        UserObject {
+          - User Email
+          - UserPreferences : {
+            Role: "K12" || "Professional" || "Hobbyist" || "Team Lead*" || "Adhoc Event"
+            Stream : ""
+            Major : ""
+            Subjects : {
+                <Map<String,Integer>> {
+                    Subject 1 : 0
+                    Subject 2 : 0
+                    Subject 3 : 0
+                    ....
+                }
+            }
+            TeamMembers : []
+           }
+           CorrectAnswerCount : 0
+           IncorrectAnswerCount : 0
+          - Buckets : {
+             IncorrectAssets : {
+               <Map<Integer,Object> {  // Set allows only unique values
+                    <Subject1_ID  : {
+                       [Question_ID: CorrectAttemptCount]> // so when CorrectAttemptCount>3 Move to archived List
+                       [Question_ID: CorrectAttemptCount]>
+                       [Question_ID: CorrectAttemptCount]>
+                       ...
+                    }
+                   ...
+               }
+             ArchivedIncorrectAssets : {
+               <Map<Integer,Object>{  // Set allows only unique values
+                     <Subject1_ID  : {
+                       [Question_ID: CorrectAttemptCount]> // If answered incorrectly move back to IncorrectAssets
+                       [Question_ID: CorrectAttemptCount]>
+                       [Question_ID: CorrectAttemptCount]>
+                       ...
+                     }
+                     ...
+               }
+
+               }
+             }
+           }
+          }
+
+
+
