@@ -14,3 +14,6 @@ it has 3 models
 - subjects
 
 More coming soon
+
+
+Srtapi backend :- /projects/strapi-backend/strapi-backend
